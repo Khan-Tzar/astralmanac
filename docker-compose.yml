@@ -1,0 +1,28 @@
+# Astralmanac: one image, two roles. The 'web' service serves the dashboard and
+# API; the 'scheduler' service harvests the sources on an interval. They share
+# the same SQLite file through the 'data' volume.
+services:
+  web:
+    build: .
+    command: astralmanac serve
+    ports:
+      - "8000:8000"
+    volumes:
+      - data:/data
+    environment:
+      # Optional: set NASA_API_KEY to activate NASA-keyed sources (e.g. APOD).
+      - NASA_API_KEY=${NASA_API_KEY:-}
+    restart: unless-stopped
+
+  scheduler:
+    build: .
+    command: astralmanac schedule
+    volumes:
+      - data:/data
+    environment:
+      - NASA_API_KEY=${NASA_API_KEY:-}
+      - ASTRALMANAC_FETCH_INTERVAL=${ASTRALMANAC_FETCH_INTERVAL:-21600}
+    restart: unless-stopped
+
+volumes:
+  data:

@@ -1,0 +1,40 @@
+# Contributing to Astralmanac
+
+Thanks for considering a contribution! Astralmanac is built so that the most
+useful contribution — **adding a new data source** — is also the easiest.
+
+## Setup
+
+```bash
+git clone https://github.com/Khan-Tzar/astralmanac.git
+cd astralmanac
+pip install -e ".[dev]"
+pytest          # run the tests
+ruff check .    # lint
+```
+
+## Adding a data source (the good first issue)
+
+1. Create `astralmanac/fetchers/<name>.py` with a `Fetcher` subclass.
+2. Implement `fetch()` to return a list of item dicts. Each item needs an
+   `external_id` and a `payload`; `title`, `event_time` (ISO 8601) and `url`
+   are optional but make the dashboard nicer.
+3. Register the class in `ALL` in `astralmanac/fetchers/__init__.py`.
+4. Prefer **key-free** public APIs so the source works with zero config. If a
+   key is unavoidable, set `requires_key = True` and override `available()`.
+5. Be gentle: these are free public APIs. One request per fetch, and don't
+   lower the fetch interval without reason.
+6. Add a short test if you can (see `tests/`).
+
+## Guidelines
+
+- One source per pull request keeps review easy.
+- No secrets or keys in the repo. Read them from the environment.
+- Keep `fetch()` focused on fetching and shaping — storage, scheduling and the
+  UI are handled for you.
+- Run `ruff check .` and `pytest` before opening a PR.
+
+## Reporting bugs / ideas
+
+Open an issue describing what you saw and how to reproduce it. New-source
+requests (with a link to the public API) are very welcome.

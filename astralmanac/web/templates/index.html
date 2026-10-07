@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astralmanac</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+         margin: 0; background: #0d1b2a; color: #e6edf3; }
+  header { padding: 1.2rem 1.5rem; background: linear-gradient(135deg,#17406b,#1a5f4a); }
+  header h1 { margin: 0; font-size: 1.5rem; }
+  header p { margin: .3rem 0 0; color: #bcd3e6; font-size: .9rem; }
+  main { max-width: 900px; margin: 0 auto; padding: 1rem 1.2rem 3rem; }
+  nav { display: flex; gap: .5rem; flex-wrap: wrap; margin: 1rem 0; }
+  nav a { padding: .35rem .8rem; border-radius: 999px; text-decoration: none;
+          font-size: .85rem; background: #16263a; color: #cfe0f2; border: 1px solid #243b55; }
+  nav a.active { background: #1a5f4a; color: #eafaf4; border-color: #2f8f6f; }
+  nav a.dormant { opacity: .5; }
+  .item { border: 1px solid #243b55; border-radius: 10px; padding: .7rem .9rem;
+          margin: .6rem 0; background: #10243a; }
+  .item .when { color: #8fb3cc; font-size: .8rem; font-variant-numeric: tabular-nums; }
+  .item a { color: #7fe3c4; }
+  .src { display:inline-block; font-size:.72rem; padding:.1rem .5rem; border-radius:999px;
+         background:#17406b; color:#cfe0f2; margin-right:.4rem; }
+  .empty { color: #8fb3cc; padding: 2rem 0; }
+  footer { color: #6e8aa6; font-size: .8rem; border-top: 1px solid #243b55; padding-top: 1rem; margin-top: 2rem; }
+  a { color: #7fe3c4; }
+</style>
+</head>
+<body>
+<header>
+  <h1>&#10024; Astralmanac</h1>
+  <p>A self-hosted almanac of public space &amp; astronomy data. Everything below was
+     harvested on a schedule and is served from your own local store.</p>
+</header>
+<main>
+  <nav>
+    <a href="/" class="{{ 'active' if not selected else '' }}">All</a>
+    {% for s in sources %}
+    <a href="/?source={{ s.id }}"
+       class="{{ 'active' if selected == s.id else '' }} {{ '' if s.available else 'dormant' }}"
+       title="{{ s.description }}{{ ' (dormant — needs an API key)' if not s.available else '' }}">{{ s.id }}</a>
+    {% endfor %}
+  </nav>
+
+  {% if not items %}
+    <p class="empty">Nothing stored yet. Run <code>astralmanac fetch</code> (or wait for the
+       scheduler's first pass), then refresh.</p>
+  {% else %}
+    {% for it in items %}
+    <div class="item">
+      <div><span class="src">{{ it.source }}</span>
+        {% if it.url %}<a href="{{ it.url }}" target="_blank" rel="noopener">{{ it.title or it.external_id }}</a>
+        {% else %}<strong>{{ it.title or it.external_id }}</strong>{% endif %}
+      </div>
+      {% if it.event_time %}<div class="when">{{ it.event_time }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  <footer>
+    Sources last updated:
+    {% for r in status %}{{ r.source }} ({{ r.stored_items }}){{ ", " if not loop.last }}{% endfor %}.
+    &middot; JSON API at <a href="/api/items">/api/items</a>, <a href="/api/status">/api/status</a>.
+    &middot; <a href="https://github.com/Khan-Tzar/astralmanac">Astralmanac</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astralmanac"
+version = "0.1.0"
+description = "A self-hostable hub for public space & astronomy data: harvest many sources into one local store, with a dashboard and JSON API."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Ivelin Vasilev" }]
+keywords = ["astronomy", "space", "nasa", "self-hosted", "dashboard", "data"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+dependencies = [
+    "requests>=2.28",
+    "Flask>=3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff>=0.5"]
+
+[project.scripts]
+astralmanac = "astralmanac.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Khan-Tzar/astralmanac"
+Issues = "https://github.com/Khan-Tzar/astralmanac/issues"
+
+[tool.setuptools.packages.find]
+include = ["astralmanac*"]
+
+[tool.ruff]
+line-length = 110
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
