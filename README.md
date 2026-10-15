@@ -28,9 +28,10 @@ copy: fast, offline-friendly, and never rate-limited by anyone upstream.
 | `launches` | Upcoming rocket launches | Launch Library 2 |
 | `close_approaches` | Near-Earth asteroid close approaches | JPL CNEOS / SSD |
 | `natural_events` | Wildfires, storms, volcanoes… on Earth | NASA EONET |
+| `iss` | Current position of the International Space Station | Open Notify |
 | `apod` | Astronomy Picture of the Day *(needs a free NASA key)* | api.nasa.gov |
 
-The default three need **no key and no account**. `apod` is the reference
+The default four need **no key and no account**. `apod` is the reference
 example of a keyed source: it stays dormant until you set `NASA_API_KEY`.
 
 ## Quickstart
@@ -96,7 +97,8 @@ class IssFetcher(Fetcher):
         }]
 ```
 
-Then add `IssFetcher` to `ALL` in `astralmanac/fetchers/__init__.py`. The
+Then add `IssFetcher` to `ALL` in `astralmanac/fetchers/__init__.py`. (This example now ships, slightly fuller, as
+[`astralmanac/fetchers/iss.py`](astralmanac/fetchers/iss.py).) The
 scheduler, store, dashboard and API pick it up automatically. See
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
