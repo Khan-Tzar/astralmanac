@@ -9,6 +9,7 @@ from .apod import ApodFetcher
 from .base import Fetcher
 from .close_approaches import CloseApproachesFetcher
 from .eonet import EonetFetcher
+from .iss import IssFetcher
 from .launches import LaunchesFetcher
 
 #: Every fetcher the app knows about. Order is cosmetic (dashboard ordering).
@@ -16,6 +17,7 @@ ALL = [
     LaunchesFetcher,
     CloseApproachesFetcher,
     EonetFetcher,
+    IssFetcher,
     ApodFetcher,
 ]
 
